@@ -13,13 +13,13 @@ services:
       - 8002:80
     volumes:
       - ./shared/log2/:/var/log/apache2/
-  daemon1:
-    build: ./daemon
-    volumes:
-      - ./shared/log1/:/var/log/apache2/
-      - ./shared/cache1/:/app/cache/
-  daemon2:
-    build: ./daemon
-    volumes:
-      - ./shared/log2/:/var/log/apache2/
-      - ./shared/cache2/:/app/cache/
+  # daemon1:
+  #   build: ./daemon
+  #   volumes:
+  #     - ./shared/log1/:/var/log/apache2/
+  #     - ./shared/cache1/:/app/cache/
+  # daemon2:
+  #   build: ./daemon
+  #   volumes:
+  #     - ./shared/log2/:/var/log/apache2/
+  #     - ./shared/cache2/:/app/cache/
