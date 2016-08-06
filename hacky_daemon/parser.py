@@ -3,12 +3,13 @@ import time
 import sys
 from pprint import pprint
 import logging
+from pymongo import MongoClient
 
-def main(FILE_PATH, SEEK_FILE):
+def main(SERVER_NAME, FILE_PATH, SEEK_FILE):
     logging.basicConfig(filename='out.log',level=logging.DEBUG)
     line_parser = apache_log_parser.make_parser("%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"")
-    # FILE_PATH = '/var/log/apache2/access.log'
-    # SEEK_FILE = '/app/cache/seek_cache.txt'
+    client = MongoClient()
+    db = client.secfilter1
     f = open(FILE_PATH, 'r')
     last = 0
     try:
@@ -26,6 +27,8 @@ def main(FILE_PATH, SEEK_FILE):
             if line:
                 last = f.tell()
                 out = line_parser(line)
+                out["server"] = SERVER_NAME
+                db.requests.insert_one(out)
                 logging.info(last)
                 logging.debug(str(out)+"\n----\n")
             else:
@@ -37,9 +40,7 @@ def main(FILE_PATH, SEEK_FILE):
             sf.close()
         logging.info("BYE")
 
-
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        sys.exit('Usage: %s log_path tmp_file_path' % sys.argv[0])
-
-    main(sys.argv[1],sys.argv[2])
+    if len(sys.argv) < 4:
+        sys.exit('Usage: %s server_name log_path tmp_file_path' % sys.argv[0])
+    main(sys.argv[1],sys.argv[2],sys.argv[3])

@@ -1,2 +1,2 @@
-daemon1: PYTHONBUFFERED=1 python parser.py ../shared/log1/access.log ../shared/cache1/seek_cache.txt
-daemon2: PYTHONBUFFERED=1 python parser.py ../shared/log2/access.log ../shared/cache2/seek_cache.txt
+daemon1: PYTHONBUFFERED=1 python parser.py web1 ../shared/log1/access.log ../shared/cache1/seek_cache.txt
+daemon2: PYTHONBUFFERED=1 python parser.py web2 ../shared/log2/access.log ../shared/cache2/seek_cache.txt
