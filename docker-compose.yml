@@ -6,10 +6,20 @@ services:
     ports:
       - 8001:80
     volumes:
-      - ./apache/log1/:/var/log/apache2/
+      - ./shared/log1/:/var/log/apache2/
   web2:
     build: ./apache
     ports:
       - 8002:80
     volumes:
-      - ./apache/log2/:/var/log/apache2/
+      - ./shared/log2/:/var/log/apache2/
+  daemon1:
+    build: ./daemon
+    volumes:
+      - ./shared/log1/:/var/log/apache2/
+      - ./shared/cache1/:/app/cache/
+  daemon2:
+    build: ./daemon
+    volumes:
+      - ./shared/log2/:/var/log/apache2/
+      - ./shared/cache2/:/app/cache/

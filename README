@@ -1,0 +1,7 @@
+# SecFilter
+
+Filter and visualize hackers by analyzing apache logs.
+
+
+For filters:
+https://github.com/PHPIDS/PHPIDS/blob/master/lib/IDS/default_filter.xml
