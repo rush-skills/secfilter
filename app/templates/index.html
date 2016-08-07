@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>SecFilter</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="static/css/bulma.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+        <style type="text/css">
+          .subtitle a{
+            color: #69707a;
+          }
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <section class="section is-medium">
+            <div class="container">
+                <div class="has-text-centered">
+                  <h1 class="title is-1">SecFilter</h1>
+                  <h2 class="subtitle is-4"><a href="/">Monitor your servers for attacks.</a> <a href="/profiles">Profile your attackers.</a></h2>
+                </div>
+                <hr>
+                <div class="threats" id="threats-wrapper">
+                  <table class="table is-striped">
+                    <thead>
+                      <tr>
+                        <th>IP</th>
+                        <th>Attack</th>
+                        <th>Host</th>
+                        <th>URL</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>IP</th>
+                        <th>Attack</th>
+                        <th>Host</th>
+                        <th>URL</th>
+                        <th>Time</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+            </div>
+        </section>
+
+        <script src="static/js/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript">
+          $(document).on('ready',function () {
+            $(document).on('click','.threat',function (e) {
+                mid = $(this).data('mid');
+                window.open("/threats/"+mid,"_blank");
+            });
+            function get_html(val){
+              return '<tr class="threat" data-mid="'+val._id.$oid+'"><td>'+val.ip+'</td><td>'+val.attack+'</td><td>'+val.host+'</td><td>'+val.url+'</td><td>'+val.time+'</td></tr>'
+              return '<div class="threat" data-mid="'+val._id.$oid+'"><p>Hello!</p><p>'+val+'</p></div>';
+              // return '<article class="media request" data-mid="'+val._id.$oid+'"><div class="media-left"><figure class="image is-64x64"><img src="' + val.user_profile_image_url + '" alt="Image"></figure></div><div class="media-content"><div class="content"><p><a target="_blank" href="https://twitter.com/statuses/'+val.id+'"><strong>' + val.user_name + '</strong></a> <a target="_blank" href="https://twitter.com/'+val.user_handle+'"><small>'+ val.user_handle + '</small></a> <small>' + val.timestamp_ms + '</small><br>'+val.text+'</p></div><span class="icon is-small"><i class="fa fa-map-marker"></i></span><span>'+val.place+'</span></div></div>{%if user and user!="stage3"%}<div class="media-right"><button class="button flag-button">FLAG</button></div>{%endif%}</article>';
+            }
+            function init(){
+              $.getJSON('/api', function(data) {
+                $.each( data.threats, function(key, val) {
+                  // console.log(val);
+                  $('#threats-wrapper tbody').prepend(get_html(val));
+                });
+              });
+            }
+            function update(){
+              if($('#threats-wrapper .threat').length > 0){
+                lastid = $('#threats-wrapper .threat').first().data('mid');
+                $.getJSON('/api/'+lastid, function(data) {
+                  $.each( data.threats, function(key, val) {
+                    // console.log(val);
+                    $('#threats-wrapper tbody').prepend(get_html(val));
+                  });
+                });
+              }
+              else{
+                init();
+              }
+            }
+            init();
+            setInterval(update, 2000);
+          })
+        </script>
+    </body>
+</html>

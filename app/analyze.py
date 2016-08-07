@@ -10,9 +10,11 @@ def main():
     threats = client.secfilter1.threats
     def insert_attack(attack, request):
         out = {
-            "host": request['remote_host'],
+            "ip": request['remote_host'],
             "time": request['time_received_isoformat'],
             "attack": attack,
+            "host": request['server'],
+            "url": request['request_url'],
             "request": dbref.DBRef("requests",request)
         }
         threats.insert_one(out)
