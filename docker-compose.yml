@@ -1,6 +1,11 @@
 version: '2'
 
 services:
+  client:
+    build: ./app/clients
+    links:
+      - web1
+      - web2
   web1:
     build: ./apache
     ports:
@@ -13,3 +18,33 @@ services:
       - 8002:80
     volumes:
       - ./shared/log2/:/var/log/apache2/
+  daemon1:
+    build: ./app/parser
+    command: python parser.py web1 /var/log/apache2/access.log /app/cache/seek_cache.txt
+    links:
+      - db
+    volumes:
+      - ./shared/log1/:/var/log/apache2/
+      - ./shared/cache1/:/app/cache/
+  daemon2:
+    build: ./app/parser
+    command: python parser.py web2 /var/log/apache2/access.log /app/cache/seek_cache.txt
+    links:
+      - db
+    volumes:
+      - ./shared/log2/:/var/log/apache2/
+      - ./shared/cache2/:/app/cache/
+  analyze:
+    build: ./app/analyze
+    links:
+      - db
+  server:
+    build: ./app/web
+    links:
+      - db
+    ports:
+      - 5051:5050
+  db:
+    image: mongo:2.6
+    ports:
+      - "27017:27017"

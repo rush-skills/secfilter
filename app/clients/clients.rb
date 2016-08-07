@@ -1,5 +1,5 @@
-web1 = "http://localhost:8001"
-web2 = "http://localhost:8002"
+web1 = "http://web1"
+web2 = "http://web2"
 
 ua1 = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
 

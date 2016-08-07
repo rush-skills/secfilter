@@ -1,0 +1,4 @@
+apache-log-parser
+pymongo
+mongoengine
+flask
