@@ -3,6 +3,7 @@ import time
 import sys
 from pprint import pprint
 import logging
+import traceback
 from pymongo import MongoClient
 
 def main(SERVER_NAME, FILE_PATH, SEEK_FILE):
@@ -28,11 +29,15 @@ def main(SERVER_NAME, FILE_PATH, SEEK_FILE):
                 last = f.tell()
                 out = line_parser(line)
                 out["server"] = SERVER_NAME
+                out["analyzed"] = False
+                # pprint(out)
                 db.requests.insert_one(out)
                 logging.info(last)
                 logging.debug(str(out)+"\n----\n")
             else:
                 time.sleep(1)
+    except:
+        traceback.print_exc()
     finally:
         f.close()
         with open(SEEK_FILE, 'w+') as sf:

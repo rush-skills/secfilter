@@ -1,3 +1,4 @@
 shared/*/*.log
 shared/*/*.txt
 out.log
+.DS_Store
