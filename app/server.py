@@ -37,9 +37,13 @@ def request(id):
     idb = threats
     requests = list(idb.find({"_id": ObjectId(id)}))
     request_sanitized = json.loads(json_util.dumps(requests[0]))
-    return render_template("threat.html",threat=request_sanitized)
+    return jsonify(**request_sanitized)
+    # return render_template("threat.html",threat=request_sanitized)
 
-# route route, renders the index.html template
+@app.route('/profile')
+def profile():
+    return render_template("profile.html")
+
 @app.route('/')
 def root():
     return render_template("index.html")

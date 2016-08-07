@@ -2,6 +2,7 @@ import logging
 from pymongo import *
 from bson import *
 import traceback
+from attacks import check_attack
 
 def main():
     logging.basicConfig(filename='out2.log',level=logging.DEBUG)
@@ -24,15 +25,8 @@ def main():
             if requests:
                 for request in requests:
                     # logging.info(request)
-                    attack = None
-                    if request["request_header_user_agent"] == "curl/7.43.0":
-                        attack = "User-Agent: curl"
-                        insert_attack(attack, request)
-                    if len(request["request_url_query"]) > 0:
-                        attack = "Unexpected Format String"
-                        insert_attack(attack, request)
-                    if len(request["request_header_referer"]) > 1:
-                        attack = "Unexpected Referer"
+                    attack = check_attack(request)
+                    if attack:
                         insert_attack(attack, request)
                     db.update_one({
                         "_id":request['_id']
