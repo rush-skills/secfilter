@@ -40,9 +40,14 @@ def request(id):
     return jsonify(**request_sanitized)
     # return render_template("threat.html",threat=request_sanitized)
 
-@app.route('/profile')
-def profile():
-    return render_template("profile.html")
+@app.route('/profile_attackers')
+def profile_attacks():
+    return render_template("profile_attackers.html")
+
+@app.route('/profile_attackers')
+def profile_attacks():
+    return render_template("profile_attackers.html")
+
 
 @app.route('/')
 def root():
