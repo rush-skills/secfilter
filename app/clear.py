@@ -1,12 +1,11 @@
 from pymongo import MongoClient
 client = MongoClient()
 client.drop_database('secfilter1')
-with open("../shared/cache1/seek_cache.txt", 'w+') as sf:
-    sf.write("0")
-    sf.close()
-with open("../shared/cache2/seek_cache.txt", 'w+') as sf:
-    sf.write("0")
-    sf.close()
-with open("out.log", 'w+') as sf:
-    sf.write("")
-    sf.close()
+def clear_file(file_path):
+    with open(file_path, 'w+') as sf:
+        sf.write("")
+        sf.close()
+clear_file("../shared/cache1/seek_cache.txt")
+clear_file("../shared/cache2/seek_cache.txt")
+clear_file("out.log")
+clear_file("out2.log")
