@@ -23,6 +23,15 @@ calls = [
   "curl --header \"X-Forwarded-For: 1.2.3.7\" #{web1}/asd.html",
   "curl --header \"X-Forwarded-For: 1.2.3.8\" #{web2}/asd.html",
   "curl --header \"X-Forwarded-For: 1.2.3.5\" -e \"http://badsite.com\" #{web1}/index.html",
+  "curl #{web1}/index.html?asd=123",
+  "curl #{web2}/index.html?asd=123",
+  "curl #{web1}/asd.html?asd=123",
+  "curl #{web2}/asd.html?asd=123",
+  "curl --header \"X-Forwarded-For: 1.2.3.5\" #{web1}/index.html?asd=123",
+  "curl --header \"X-Forwarded-For: 1.2.3.6\" #{web2}/index.html?asd=123",
+  "curl --header \"X-Forwarded-For: 1.2.3.7\" #{web1}/asd.html?asd=123",
+  "curl --header \"X-Forwarded-For: 1.2.3.8\" #{web2}/asd.html?asd=123",
+  "curl --header \"X-Forwarded-For: 1.2.3.5\" -e \"http://badsite.com\" #{web1}/index.html?asd=123",
   "curl -e \"http://badsite.com\" #{web2}/index.html",
   "curl --header \"X-Forwarded-For: 1.2.3.5\" -e \"http://badsite.com\" #{web1}/asd.html",
   "curl -e \"http://badsite.com\" #{web2}/asd.html",
@@ -32,12 +41,12 @@ calls = [
 ]
 
 while true
-  puts "loop"
+  # puts "loop"
   count = rand(10) + 10
   count.times do |c|
     `#{calls.sample}`
   end
-  puts "going to sleep"
+  # puts "going to sleep"
   sleep 2
-  puts "out of sleep"
+  # puts "out of sleep"
 end

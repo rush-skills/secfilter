@@ -13,11 +13,13 @@ def main():
         out = {
             "ip": request['remote_host'],
             "time": request['time_received_isoformat'],
+            "time_obj": request['time_received_datetimeobj'],
             "attack": attack,
             "host": request['server'],
             "url": request['request_url'],
             "request": dbref.DBRef("requests",request)
         }
+        # print request['time_received_datetimeobj']
         threats.insert_one(out)
     try:
         while True:

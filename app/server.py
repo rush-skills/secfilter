@@ -40,14 +40,41 @@ def request(id):
     return jsonify(**request_sanitized)
     # return render_template("threat.html",threat=request_sanitized)
 
-@app.route('/profile_attackers')
+@app.route('/profile_attacks')
 def profile_attacks():
-    return render_template("profile_attackers.html")
+    profiles = threats.aggregate([
+        {"$group" :
+            {
+                "_id":"$attack",
+                "count": {"$sum":1}
+            }
+        },
+        {
+            "$sort" : { "count" : -1 }
+        }
+    ])
+    request_sanitized = json.loads(json_util.dumps(profiles))
+    request_sanitized = {"profiles": request_sanitized}
+    return jsonify(**request_sanitized)
+    # return render_template("profile_attacks.html")
 
-@app.route('/profile_attackers')
-def profile_attacks():
-    return render_template("profile_attackers.html")
-
+@app.route('/profile')
+def profile():
+    profiles = threats.aggregate([
+        {"$group" :
+            {
+                "_id":{"ip": '$ip',"attack":'$attack'},
+                "count": {"$sum":1}
+            }
+        },
+        {
+            "$sort" : { "count" : -1 }
+        }
+    ])
+    request_sanitized = json.loads(json_util.dumps(profiles))
+    # request_sanitized = {"profiles": request_sanitized}
+    # return jsonify(**request_sanitized)
+    return render_template("profile.html", attackers=request_sanitized)
 
 @app.route('/')
 def root():
