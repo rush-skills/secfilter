@@ -2,13 +2,14 @@ from pymongo import MongoClient
 from flask import *
 from bson import json_util, ObjectId
 import json
-
+import os
 # Create simple flask app
 app = Flask(__name__)
 # To make sure the session is secure
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 # connect to mongo db
-connection = MongoClient()
+# MONGODB_HOST = os.environ.get('DB_PORT_27017_TCP_ADDR', '127.0.0.1')
+connection = MongoClient("mongodb://db:27017/")
 # set the db and collection
 db = connection.secfilter1
 requests = db.requests

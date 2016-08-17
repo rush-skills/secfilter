@@ -3,10 +3,12 @@ from pymongo import *
 from bson import *
 import traceback
 from attacks import check_attack
+import os
 
 def main():
     logging.basicConfig(filename='out2.log',level=logging.DEBUG)
-    client = MongoClient()
+    MONGODB_HOST = os.environ.get('DB_PORT_27017_TCP_ADDR', '127.0.0.1')
+    client = MongoClient("mongodb://db:27017/")
     db = client.secfilter1.requests
     threats = client.secfilter1.threats
     def insert_attack(attack, request):
